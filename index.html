@@ -1,0 +1,80 @@
+<!doctype html><html lang="en-AU"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#00314F">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Subbie Invoices">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="favicon-32x32.png">
+<title>Subcontractor invoices outstanding</title>
+<style>
+:root{--navy:#00314F;--navy9:#002335;--green:#84BD00;--greent:#5B8200;--red:#B3261E;--reds:#FBE6E5;--amb:#A5670A;--ambs:#FBF0DC;--g6:#4E6675;--g2:#DDE4E8;--g1:#EDF1F3;--g05:#F6F8F9}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,"Helvetica Neue",Arial,sans-serif;background:var(--g05);color:#111A20;font-size:17px;-webkit-text-size-adjust:100%}
+header{background:var(--navy);color:#fff;padding:calc(env(safe-area-inset-top) + 14px) 18px 22px;border-bottom:4px solid var(--green)}
+.top{display:flex;justify-content:space-between;align-items:center}.top img{height:30px}
+.top button{background:none;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:6px;padding:6px 10px;font:600 12px Inter,Arial;letter-spacing:.08em}
+.eyebrow{font:700 12px Inter,Arial;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin:18px 0 4px}
+h1{font-size:22px;margin:0 0 14px;font-weight:700}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}.kpi{background:rgba(255,255,255,.08);border-radius:10px;padding:12px}
+.kpi .l{font-size:13px;opacity:.8}.kpi .v{font-size:28px;font-weight:800;margin-top:2px}.kpi.od .v{color:#FF8A80}
+.upd{font-size:13px;opacity:.75;margin-top:12px}
+main{padding:14px 14px 40px;max-width:640px;margin:auto}
+.chips{display:flex;gap:8px;margin:4px 0 14px;overflow-x:auto}.chip{border:1.5px solid var(--navy);background:#fff;color:var(--navy);border-radius:999px;padding:9px 16px;font:600 15px Inter,Arial;white-space:nowrap}
+.chip.on{background:var(--navy);color:#fff}
+.card{background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,35,53,.12);margin-bottom:14px;overflow:hidden}
+.ch{display:flex;justify-content:space-between;align-items:baseline;padding:14px 16px;border-bottom:1px solid var(--g2)}
+.ch h2{font-size:18px;margin:0;color:var(--navy)}.ch .t{font-size:20px;font-weight:800;color:var(--navy);white-space:nowrap;margin-left:10px}
+.ch .s{font-size:13px;color:var(--g6);margin-top:3px}
+.inv{padding:12px 16px;border-bottom:1px solid var(--g1)}.inv:last-child{border:0}
+.r1{display:flex;justify-content:space-between;align-items:center;gap:8px}.no{font-weight:700;font-size:17px}.amt{font-weight:800;font-size:19px}
+.job{color:#22323C;margin:4px 0 6px;font-size:15px;line-height:1.35}.meta{font-size:14px;color:var(--g6)}.meta b{color:#22323C;font-weight:600}
+.badge{display:inline-block;background:var(--red);color:#fff;font:700 11px Inter,Arial;letter-spacing:.08em;border-radius:4px;padding:3px 7px;margin-left:6px;vertical-align:2px}
+.part{font-size:13px;color:var(--g6)}
+h3{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--greent);margin:26px 4px 10px}
+.flag{background:#fff;border-left:5px solid var(--g6);border-radius:8px;padding:12px 14px;margin-bottom:10px;box-shadow:0 1px 2px rgba(0,35,53,.1)}
+.flag.red{border-color:var(--red);background:var(--reds)}.flag.amber{border-color:var(--amb);background:var(--ambs)}
+.flag b{display:block;margin-bottom:4px}.flag p{margin:0;font-size:15px;line-height:1.4;color:#22323C}
+.foot{font-size:13px;color:var(--g6);text-align:center;margin-top:24px;line-height:1.5}
+#lock{position:fixed;inset:0;background:var(--navy);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center}
+#lock img{height:44px;margin-bottom:30px}#lock input{font-size:20px;padding:14px;border-radius:8px;border:0;width:100%;max-width:320px;text-align:center}
+#lock button{margin-top:14px;background:var(--green);color:var(--navy9);border:0;border-radius:8px;padding:14px 30px;font:700 15px Inter,Arial;letter-spacing:.1em;width:100%;max-width:320px}
+#err{color:#FF8A80;min-height:22px;margin-top:10px}#app{display:none}
+</style></head><body>
+<div id="lock"><img src="bsg-logo-reversed.svg" alt="Buildsmart Group"><div style="font-size:20px;font-weight:700;margin-bottom:6px">Subbie invoices</div>
+<div style="opacity:.8;margin-bottom:22px">Enter your passcode to open</div>
+<form id="f"><input id="pw" type="password" autocomplete="current-password" placeholder="Passcode"><br><button>OPEN</button></form><div id="err"></div></div>
+<div id="app"><header><div class="top"><img src="bsg-logo-reversed.svg" alt="Buildsmart Group"><button id="lk">LOCK</button></div>
+<div class="eyebrow">Subcontractors</div><h1>Invoices outstanding</h1>
+<div class="kpis"><div class="kpi"><div class="l">Total owing</div><div class="v" id="tot"></div></div><div class="kpi od"><div class="l">Overdue</div><div class="v" id="od"></div></div></div>
+<div class="upd" id="upd"></div></header>
+<main><div class="chips"><button class="chip on" data-f="all">All invoices</button><button class="chip" data-f="od">Overdue only</button></div>
+<div id="cards"></div><h3>Flags to check</h3><div id="flags"></div>
+<div class="foot">Only a payment receipt you've emailed counts as paid.<br>Updated every Monday from your email labels and receipts.</div></main></div>
+<script>
+const V='fa90db50ef';const $=s=>document.querySelector(s);const fmt=n=>'$'+n.toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2});
+const D=s=>s?new Date(s+'T00:00').toLocaleDateString('en-AU',{day:'numeric',month:'short'}):'Not stated';
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ub=b=>Uint8Array.from(atob(b),c=>c.charCodeAt(0));let DATA,F='all';
+async function unlock(pw){const e=await (await fetch('data.enc.json?v='+Date.now(),{cache:'no-store'})).json();
+ const k0=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+ const k=await crypto.subtle.deriveKey({name:'PBKDF2',salt:ub(e.salt),iterations:e.iter,hash:'SHA-256'},k0,{name:'AES-GCM',length:256},false,['decrypt']);
+ return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(e.iv)},k,ub(e.ct))))}
+function render(){const I=DATA.invoices;const tot=I.reduce((a,i)=>a+i.amount,0),od=I.filter(i=>i.overdue).reduce((a,i)=>a+i.amount,0);
+ $('#tot').textContent=fmt(Math.round(tot));$('#od').textContent=fmt(Math.round(od));$('#tot').textContent=$('#tot').textContent.replace('.00','');$('#od').textContent=$('#od').textContent.replace('.00','');
+ const u=new Date(DATA.updated);$('#upd').textContent=`${I.length} unpaid invoices · Last updated ${u.toLocaleDateString('en-AU',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}, ${u.toLocaleTimeString('en-AU',{hour:'numeric',minute:'2-digit'})}`;
+ const g={};I.forEach(i=>(g[i.sub]=g[i.sub]||[]).push(i));
+ const subs=Object.entries(g).map(([s,l])=>{l.sort((a,b)=>(a.sent||'').localeCompare(b.sent||''));return [s,l,l.reduce((a,i)=>a+i.amount,0),l[0].sent]});
+ subs.sort((a,b)=>(a[3]||'').localeCompare(b[3]||''));
+ $('#cards').innerHTML=subs.map(([s,l,t])=>{const v=F==='od'?l.filter(i=>i.overdue):l;if(!v.length)return'';const n=l.filter(i=>i.overdue).length;
+  return `<div class="card"><div class="ch"><div><h2>${esc(s)}</h2><div class="s">${l.length} invoice${l.length>1?'s':''}${n?` · ${n} overdue`:''}</div></div><div class="t">${fmt(t)}</div></div>`+
+  v.map(i=>`<div class="inv"><div class="r1"><div class="no">#${esc(String(i.no).replace(/^#/,''))}${i.overdue?'<span class="badge">OVERDUE</span>':''}</div><div class="amt">${fmt(i.amount)}</div></div>
+  <div class="job">${esc(i.job)}</div>${i.total&&i.total-i.amount>0.5?`<div class="part">Balance left of ${fmt(i.total)} invoice</div>`:''}
+  <div class="meta">Sent <b>${D(i.sent)}</b> · Due <b>${D(i.due)}</b></div></div>`).join('')+'</div>'}).join('')||'<p>No overdue invoices.</p>';
+ $('#flags').innerHTML=DATA.flags.map(f=>`<div class="flag ${f.level}"><b>${esc(f.title)}</b><p>${esc(f.text)}</p></div>`).join('')}
+async function go(pw,quiet){try{DATA=await unlock(pw);localStorage.setItem('bsgpw',pw);$('#lock').style.display='none';$('#app').style.display='block';render()}
+ catch(e){localStorage.removeItem('bsgpw');if(!quiet)$('#err').textContent=navigator.onLine?'That passcode didn\'t work.':'You\'re offline – try again when connected.'}}
+$('#f').onsubmit=e=>{e.preventDefault();go($('#pw').value.trim())};
+$('#lk').onclick=()=>{localStorage.removeItem('bsgpw');location.reload()};
+document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');F=c.dataset.f;render()});
+const s=localStorage.getItem('bsgpw');if(s)go(s,true);
+document.addEventListener('visibilitychange',()=>{const p=localStorage.getItem('bsgpw');if(!document.hidden&&p&&DATA)go(p,true)});
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
+</script></body></html>
